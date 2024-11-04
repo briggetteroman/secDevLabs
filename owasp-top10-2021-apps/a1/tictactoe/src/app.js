@@ -7,7 +7,6 @@ const crypto = require('./crypto')
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const helmet = require('helmet');
-const { verify } = require('crypto');
 
 db.createTables()
 
