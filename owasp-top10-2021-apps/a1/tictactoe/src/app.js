@@ -57,7 +57,7 @@ app.post('/game', verifyJWT, async (req, res) => {
     const user = req.body.user
     const result = req.body.result
 
-    verifyCurrentUser(req, res)
+    verifyCurrentUser(req, user, res)
 
     let statistics = await db.getStatisticsFromUser(user)
     if (statistics === null){
@@ -123,7 +123,7 @@ app.post('/create', async (req, res) => {
 
 app.get('/statistics/data', verifyJWT, async (req, res) => {
     const user = req.query.user
-    verifyCurrentUser(req, res)
+    verifyCurrentUser(req, user, res)
 
     let statistics = await db.getStatisticsFromUser(user)
     if (statistics === undefined){
@@ -181,11 +181,11 @@ app.post('/login', async (req, res) => {
 });
 
 // Access control
-function verifyCurrentUser(req, res) {
+function verifyCurrentUser(req, user, res) {
     var token = req.cookies.tictacsession
     var currentUser = jwt.decode(token).username
 
-    if (currentUser != req.body.user){
+    if (currentUser != user){
         res
             .status(403)
             .json({msg: "Do no have permission!"})
